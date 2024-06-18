@@ -1,0 +1,30 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.body %></p>
+<p>Posted by <%= @post.user.name %></p>
+
+<h2>Comments</h2>
+<% @post.comments.each do |comment| %>
+  <p><strong><%= comment.user.name %>:</strong> <%= comment.body %></p>
+  <% if comment.user == current_user %>
+    <%= link_to 'Delete', [comment.post, comment], method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% end %>
+
+<% if logged_in? %>
+  <h3>Add a comment:</h3>
+  <%= form_with(model: [ @post, @post.comments.build ], local: true) do |form| %>
+    <div>
+      <%= form.label :body %>
+      <%= form.text_area :body %>
+    </div>
+    <div>
+      <%= form.submit 'Add Comment' %>
+    </div>
+  <% end %>
+<% else %>
+  <p>You must be logged in to comment.</p>
+<% end %>
+
+<%= link_to 'Edit', edit_post_path(@post) if @post.user == current_user %> |
+<%= link_to 'Back', posts_path %> |
+<%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %>

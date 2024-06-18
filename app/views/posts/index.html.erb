@@ -1,0 +1,13 @@
+<h1>Posts</h1>
+
+<%= link_to 'New Post', new_post_path %>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= link_to post.title, post %>
+      <p><%= truncate(post.body, length: 100) %></p>
+      <p>Posted by <%= post.user.name %></p>
+    </li>
+  <% end %>
+</ul>
